@@ -1,0 +1,528 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FreshMart - Online Grocery Store</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f8f4;
+    color: #26382c;
+    text-align: center;
+}
+
+header {
+    background: linear-gradient(135deg, #075e32, #16a34a);
+    color: white;
+    padding: 25px;
+}
+
+#title {
+    margin: 5px;
+    font-size: 36px;
+}
+
+#msg {
+    font-size: 17px;
+}
+
+nav {
+    background: #12372a;
+    padding: 16px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 12px;
+    font-size: 16px;
+}
+
+nav a:hover {
+    color: #ffd166;
+}
+
+section {
+    padding: 20px;
+}
+
+h2 {
+    color: #087f3d;
+}
+
+.deal-section {
+    background: #e0f2e7;
+    padding: 25px;
+}
+
+#product {
+    width: 180px;
+    padding: 25px;
+    margin: 20px auto;
+    background: #ff9f1c;
+    color: white;
+    border-radius: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    box-shadow: 0 5px 15px #aaa;
+}
+
+button {
+    border: none;
+    padding: 11px 16px;
+    margin: 5px;
+    border-radius: 20px;
+    background: #16803c;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #075e32;
+    transform: scale(1.04);
+}
+
+.search-area {
+    margin: 20px;
+}
+
+input, select {
+    padding: 11px;
+    margin: 7px;
+    border: 1px solid #b5cbbb;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+#search {
+    width: 250px;
+    max-width: 90%;
+}
+
+.products {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin: 20px;
+}
+
+.card {
+    width: 230px;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px #bbb;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+.card img {
+    width: 100%;
+    height: 145px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.card h3 {
+    color: #087f3d;
+    font-size: 21px;
+}
+
+.price {
+    font-weight: bold;
+    color: #444;
+}
+
+.cart-box {
+    background: white;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px #bbb;
+}
+
+#cartItems {
+    line-height: 2;
+}
+
+#total {
+    color: #087f3d;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#time {
+    color: #087f3d;
+    font-weight: bold;
+    font-size: 17px;
+    margin: 25px;
+}
+
+footer {
+    background: #12372a;
+    color: white;
+    padding: 15px;
+    margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+    nav a {
+        display: inline-block;
+        margin: 7px;
+    }
+
+    #title {
+        font-size: 28px;
+    }
+
+    .card {
+        width: 90%;
+        max-width: 300px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header id="home">
+    <h1 id="title">FreshMart Online Grocery Store</h1>
+    <p id="msg">Fresh food. Better life. Delivered to you!</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#products">Fresh Picks</a>
+    <a href="#cart">My Cart (<span id="cartCount">0</span>)</a>
+    <a href="https://www.bigbasket.com/" target="_blank">Shop Online</a>
+    <a href="mailto:freshmart@gmail.com">Email</a>
+    <a href="tel:9876543210">Call</a>
+</nav>
+
+<section class="deal-section">
+    <h2>Today's Fresh Pick</h2>
+
+    <div id="product">Fresh Apple</div>
+
+    <button id="changeStyle">Change Style</button>
+    <button id="hideProduct">Hide</button>
+    <button id="showProduct">Show</button>
+    <button id="moveProduct">Move</button>
+    <button id="fadeProduct">Fade</button>
+    <button id="resetProduct">Reset</button>
+</section>
+
+<section id="products">
+    <h2>Fresh Picks</h2>
+
+    <div class="search-area">
+        <input type="text" id="search"
+               placeholder="Search for groceries...">
+
+        <select id="category">
+            <option value="all">All Categories</option>
+            <option value="fruits">Fruits</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="dairy">Dairy</option>
+            <option value="beverages">Beverages</option>
+        </select>
+
+        <button id="resetSearch">Show All Products</button>
+    </div>
+
+    <div class="products">
+
+        <div class="card" data-category="fruits"
+             data-name="apple" data-price="120">
+            <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80"
+                 alt="Fresh Apples">
+            <h3>Fresh Fruits</h3>
+            <p>Crispy and naturally sweet apples.</p>
+            <p class="price">Apple - ₹120/kg</p>
+            <button class="addCart">Add to Cart</button>
+        </div>
+
+        <div class="card" data-category="vegetables"
+             data-name="vegetables" data-price="60">
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80"
+                 alt="Fresh Vegetables">
+            <h3>Fresh Vegetables</h3>
+            <p>Healthy vegetables picked fresh.</p>
+            <p class="price">Vegetables - ₹60/kg</p>
+            <button class="addCart">Add to Cart</button>
+        </div>
+
+        <div class="card" data-category="dairy"
+             data-name="milk" data-price="60">
+            <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80"
+                 alt="Fresh Milk">
+            <h3>Dairy Products</h3>
+            <p>Fresh and nutritious dairy products.</p>
+            <p class="price">Milk - ₹60/L</p>
+            <button class="addCart">Add to Cart</button>
+        </div>
+
+        <div class="card" data-category="beverages"
+             data-name="juice" data-price="90">
+            <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80"
+                 alt="Fresh Juice">
+            <h3>Fresh Beverages</h3>
+            <p>Refreshing fruit juice for your day.</p>
+            <p class="price">Juice - ₹90/L</p>
+            <button class="addCart">Add to Cart</button>
+        </div>
+
+        <div class="card" data-category="fruits"
+             data-name="banana" data-price="50">
+            <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=600&q=80"
+                 alt="Fresh Bananas">
+            <h3>Fresh Bananas</h3>
+            <p>Sweet bananas for everyday nutrition.</p>
+            <p class="price">Banana - ₹50/dozen</p>
+            <button class="addCart">Add to Cart</button>
+        </div>
+
+        <div class="card" data-category="dairy"
+             data-name="curd" data-price="40">
+            <img src="https://images.unsplash.com/photo-1571212515416-fef01fc43637?auto=format&fit=crop&w=600&q=80"
+                 alt="Dairy Product">
+            <h3>Fresh Curd</h3>
+            <p>A tasty addition to your daily meals.</p>
+            <p class="price">Curd - ₹40/pack</p>
+            <button class="addCart">Add to Cart</button>
+        </div>
+
+    </div>
+
+    <p id="noProducts" style="display:none">
+        No matching products found.
+    </p>
+</section>
+
+<section id="cart">
+    <h2>My Shopping Cart</h2>
+
+    <div class="cart-box">
+        <div id="cartItems">Your cart is empty.</div>
+        <p id="total">Total: ₹0</p>
+        <button id="clearCart">Clear Cart</button>
+        <button id="checkout">Place Order</button>
+        <p id="message"></p>
+    </div>
+</section>
+
+<p id="time"></p>
+
+<footer>
+    FreshMart © 2026 | Freshness Delivered Daily
+</footer>
+
+<script>
+$(document).ready(function() {
+
+    var cart = {};
+    var moved = false;
+
+    // Change title style
+    $("#changeStyle").click(function() {
+        $("#title").css({
+            "color": "#ffd166",
+            "font-size": "44px"
+        });
+    });
+
+    // Hide product
+    $("#hideProduct").click(function() {
+        $("#product").hide();
+    });
+
+    // Show product
+    $("#showProduct").click(function() {
+        $("#product").show();
+    });
+
+    // Move product
+    $("#moveProduct").click(function() {
+        if (moved) {
+            $("#product").animate({left: "0px"}, 500);
+        } else {
+            $("#product").animate({left: "150px"}, 500);
+        }
+        moved = !moved;
+    });
+
+    // Fade product
+    $("#fadeProduct").click(function() {
+        $("#product").fadeOut(500).fadeIn(500);
+    });
+
+    // Reset product
+    $("#resetProduct").click(function() {
+        $("#product").stop(true, true).show().css({
+            "left": "0px",
+            "opacity": "1",
+            "background": "#ff9f1c"
+        });
+
+        $("#title").css({
+            "color": "white",
+            "font-size": "36px"
+        });
+
+        moved = false;
+    });
+
+    // Search and category filter
+    function filterProducts() {
+        var search = $("#search").val().toLowerCase();
+        var category = $("#category").val();
+        var count = 0;
+
+        $(".card").each(function() {
+            var name = $(this).data("name");
+            var type = $(this).data("category");
+
+            if ((name.includes(search) || $(this).text().toLowerCase().includes(search))
+                && (category == "all" || category == type)) {
+                $(this).stop(true, true).fadeIn(200);
+                count++;
+            } else {
+                $(this).stop(true, true).hide();
+            }
+        });
+
+        if (count == 0) {
+            $("#noProducts").show();
+        } else {
+            $("#noProducts").hide();
+        }
+    }
+
+    $("#search").on("input", filterProducts);
+    $("#category").change(filterProducts);
+
+    $("#resetSearch").click(function() {
+        $("#search").val("");
+        $("#category").val("all");
+        filterProducts();
+    });
+
+    // Update cart
+    function updateCart() {
+        var total = 0;
+        var count = 0;
+        var output = "";
+
+        $.each(cart, function(name, item) {
+            var subtotal = item.price * item.quantity;
+            total += subtotal;
+            count += item.quantity;
+
+            output += name + " × " + item.quantity +
+                " = ₹" + subtotal +
+                ' <button class="removeCart" data-name="' +
+                name + '">Remove One</button><br>';
+        });
+
+        if (count == 0) {
+            output = "Your cart is empty.";
+        }
+
+        $("#cartItems").html(output);
+        $("#total").text("Total: ₹" + total);
+        $("#cartCount").text(count);
+    }
+
+    // Add products to cart
+    $(".addCart").click(function() {
+        var card = $(this).closest(".card");
+        var name = card.data("name");
+        var price = Number(card.data("price"));
+
+        if (!cart[name]) {
+            cart[name] = {
+                price: price,
+                quantity: 0
+            };
+        }
+
+        cart[name].quantity++;
+        updateCart();
+
+        $("#message").text("Product added to cart!");
+        setTimeout(function() {
+            $("#message").text("");
+        }, 1500);
+    });
+
+    // Remove one product
+    $("#cartItems").on("click", ".removeCart", function() {
+        var name = $(this).data("name");
+
+        if (cart[name]) {
+            cart[name].quantity--;
+
+            if (cart[name].quantity == 0) {
+                delete cart[name];
+            }
+        }
+
+        updateCart();
+    });
+
+    // Clear cart
+    $("#clearCart").click(function() {
+        cart = {};
+        updateCart();
+        $("#message").text("Cart cleared.");
+    });
+
+    // Place order demo
+    $("#checkout").click(function() {
+        if ($.isEmptyObject(cart)) {
+            alert("Please add products to your cart first.");
+        } else {
+            alert("Order placed successfully! Total: " +
+                  $("#total").text().replace("Total: ", ""));
+            cart = {};
+            updateCart();
+            $("#message").text("Thank you for shopping with FreshMart!");
+        }
+    });
+
+    // Live date and time
+    function showTime() {
+        var current = new Date();
+
+        $("#time").html(
+            current.toLocaleDateString() +
+            " | " + current.toLocaleTimeString()
+        );
+    }
+
+    showTime();
+    setInterval(showTime, 1000);
+
+});
+</script>
+
+</body>
+</html>
+```
